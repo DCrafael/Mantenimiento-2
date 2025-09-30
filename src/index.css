@@ -1,0 +1,107 @@
+/* Tailwind v4 */
+@import "tailwindcss";
+
+/* Alturas base para ocupar toda la pantalla */
+html, body, #root {
+  height: 100%;
+}
+
+/* Suavizado de fuentes */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === Patrones de fondo sutiles (opcionales) === */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-dots {
+  background-image: radial-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* === Glassmorphism (para tarjetas translúcidas si las usas) === */
+.glass {
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
+}
+
+/* === Borde degradado (para resaltar tarjetas, login, etc.) === */
+.gradient-border {
+  position: relative;
+  border-radius: 1rem; /* 16px */
+}
+.gradient-border::before {
+  content: "";
+  position: absolute; inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #60a5fa, #34d399, #818cf8);
+
+  /* Compatibilidad para el borde */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+
+  pointer-events: none;
+}
+
+/* === Tema oscuro opcional (solo si aplicas la clase .dark-surface en un wrapper) === */
+@media (prefers-color-scheme: dark) {
+  .dark-surface {
+    background: #0f172a; /* slate-900 */
+    color: #f8fafc;      /* slate-50 */
+  }
+  .dark-surface .glass {
+    background: rgba(30,41,59,.75);
+  }
+}
+
+/* ===== Colores seguros para PDF (evita oklch) ===== */
+.print-safe,
+.print-safe * {
+  color: #111827 !important;            /* slate-900 */
+  background-color: #ffffff !important;
+  border-color: #e5e7eb !important;     /* gray-200 */
+  box-shadow: none !important;
+  /* Evita filtros/gradientes que html2canvas no soporta bien */
+  background-image: none !important;
+  filter: none !important;
+}
+
+/* ===== Estilos de impresión (A4 y colores exactos) ===== */
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
+/* Fuerza a que se impriman colores de fondo y bordes tal como se ven */
+* {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+/* Oculta elementos con esta clase en el PDF */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  /* Evita cortes feos en tarjetas o grids */
+  .avoid-break,
+  .avoid-break * {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
